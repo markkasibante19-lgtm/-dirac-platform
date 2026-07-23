@@ -1,4 +1,3 @@
-// This is a single skill card that shows up in the list
 // It displays the skill name, category, and a "Request Swap" button
 
 const SkillCard = ({ skill }) => {
