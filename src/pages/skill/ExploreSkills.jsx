@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import SkillCard from '../../components/skill/SkillCard';
 
-// Sample data (hardcoded for now - we will connect to Pasha's backend later)
+// the data (hardcoded for now -  l connect to Pasha's backend later)
 const sampleSkills = [
     { id: 1, name: 'Prompt Engineering', category: 'IT', description: 'Learn how to write effective prompts for AI models' },
     { id: 2, name: 'Financial Analysis', category: 'Business', description: 'Read and interpret financial statements' },
