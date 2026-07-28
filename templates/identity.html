@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Passport | Uganda Economic Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🇺🇬</span>
+                <span class="logo-text">
+                    Economic<span class="gold">Gateway</span>
+                    <span class="logo-sub">Skills · Identity · Jobs</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/dashboard">📊 Jobs Report</a>
+                <a href="/sms_parser">📱 SMS</a>
+                <a href="/identity?name={{ user.name }}" class="active">🪪 Profile</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="app-container">
+
+        <!-- Hero -->
+        <div class="hero animate-in">
+            <div class="hero-content">
+                <span class="hero-badge">🪪 Digital Identity</span>
+                <h1>User <span class="gold">Profile</span></h1>
+                <p>Your complete economic profile - skills, income history, and job applications.</p>
+            </div>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="identity-passport animate-in">
+            <div class="passport-header">
+                <div>
+                    <div class="passport-name">{{ user.name }}</div>
+                    <div class="passport-id">
+                        📱 {% if user.phone %}{{ user.phone }}{% else %}No phone provided{% endif %}
+                        · Joined {{ user.created_at[:10] if user.created_at else 'N/A' }}
+                    </div>
+                </div>
+                <div class="passport-score">
+                    <div class="score-label">Trust Score</div>
+                    <div class="score-number">{{ score }}</div>
+                    <div class="score-band band-{{ band|lower }}">{{ band }} Trust</div>
+                </div>
+            </div>
+
+            <div class="passport-grid">
+                <div class="passport-item">
+                    <div class="value">{{ skills|length }}</div>
+                    <div class="label">Skills</div>
+                </div>
+                <div class="passport-item">
+                    <div class="value">{{ total_in if total_in is defined else 0 }}</div>
+                    <div class="label">Income Inflow (UGX)</div>
+                </div>
+                <div class="passport-item">
+                    <div class="value">{{ jobs|length }}</div>
+                    <div class="label">Job Applications</div>
+                </div>
+                <div class="passport-item">
+                    <div class="value">{{ total_out if total_out is defined else 0 }}</div>
+                    <div class="label">Income Outflow (UGX)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="grid-2 animate-in animate-in-delay-1">
+
+            <!-- Skills -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">🛠️</span> Skills</h3>
+                </div>
+                {% if skills %}
+                    {% for s in skills %}
+                        <span class="skill-tag {{ s.skill_type }}">{{ s.skill_name }}</span>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No skills recorded yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- SMS Transactions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">📱</span> SMS Income History</h3>
+                </div>
+                {% if sms_tx %}
+                    <div class="sms-list">
+                        {% for t in sms_tx %}
+                        <div class="sms-item">
+                            <span>
+                                {% if t.direction == 'in' %}💰{% elif t.direction == 'out' %}💸{% else %}📩{% endif %}
+                                {{ t.amount if t.amount is not none else '?' }} UGX
+                            </span>
+                            <span class="sms-date">{{ t.transaction_date or 'Unknown' }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No SMS transactions recorded.</p>
+                {% endif %}
+            </div>
+
+            <!-- Job Applications -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">💼</span> Job Applications</h3>
+                </div>
+                {% if jobs %}
+                    {% for j in jobs %}
+                    <div class="job-item">
+                        <div class="job-title">{{ j.job_title }}</div>
+                        <div class="job-meta">{{ j.company }} · {{ j.applied_date[:10] if j.applied_date else 'N/A' }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No job applications recorded.</p>
+                {% endif %}
+            </div>
+
+            <!-- Score Breakdown -->
+            <div class="card card-gold-border">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">📊</span> Score Breakdown</h3>
+                </div>
+                <div class="score-grid">
+                    <div class="score-item">
+                        <div class="score-value">
+                            {% if total_in is defined %}
+                                {% if total_in >= 100000 %}40
+                                {% elif total_in >= 50000 %}25
+                                {% else %}10{% endif %}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                        <div class="score-label-text">Income</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{% if jobs|length > 0 %}10{% else %}0{% endif %}</div>
+                        <div class="score-label-text">Jobs</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{% if skills|length > 0 %}20{% else %}0{% endif %}</div>
+                        <div class="score-label-text">Skills</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value gold">{{ score if score is defined else 0 }}</div>
+                        <div class="score-label-text">Total</div>
+                    </div>
+                </div>
+                <div class="score-total">
+                    <strong>Total Score: {{ score if score is defined else 0 }}</strong>
+                    <span class="band-tag band-{{ band|lower }}">{{ band if band is defined else 'Unknown' }} Trust Band</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

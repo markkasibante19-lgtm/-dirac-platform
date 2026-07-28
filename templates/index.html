@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Swap | Uganda Economic Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🇺🇬</span>
+                <span class="logo-text">
+                    Economic<span class="gold">Gateway</span>
+                    <span class="logo-sub">Skills · Identity · Jobs</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="active">🏠 Home</a>
+                <a href="/dashboard">📊 Jobs Report</a>
+                <a href="/sms_parser">📱 SMS</a>
+                <a href="/identity?name=Mark">🪪 Profile</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- Hero -->
+        <div class="hero animate-in">
+            <div class="hero-content">
+                <span class="hero-badge">🇺🇬 Uganda Economic Gateway</span>
+                <h1>Skill Swap <span class="gold">Marketplace</span></h1>
+                <p>Exchange skills, build your identity, and find opportunities in Uganda's informal economy.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">{{ offered|length + wanted|length }}</span>
+                        <span class="stat-label">Total Skills</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">{{ offered|length }}</span>
+                        <span class="stat-label">Offered</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">{{ wanted|length }}</span>
+                        <span class="stat-label">Wanted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="grid-2">
+            <!-- Add Skill Form -->
+            <div class="card animate-in animate-in-delay-1">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">➕</span> Add Your Skill</h3>
+                </div>
+                <form method="POST" action="/add_skill">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" name="user_name" class="form-control" placeholder="e.g. Mark Kasibante" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone <span class="hint">(optional)</span></label>
+                        <input type="text" name="user_phone" class="form-control" placeholder="e.g. 0700123456">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Name</label>
+                        <input type="text" name="skill_name" class="form-control" placeholder="e.g. Web Development, Farming, Bookkeeping" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select name="skill_type" class="form-control">
+                            <option value="offer">💡 I can teach this</option>
+                            <option value="want">🎯 I want to learn this</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">➕ Add Skill</button>
+                </form>
+            </div>
+
+            <!-- Skills Offered -->
+            <div class="card animate-in animate-in-delay-2">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">💡</span> Skills Offered</h3>
+                    <span class="skill-tag offer">{{ offered|length }} offered</span>
+                </div>
+                {% if offered %}
+                    {% for skill in offered %}
+                    <div style="padding: 12px 0; border-bottom: 1px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>{{ skill.skill_name }}</strong>
+                            <div style="font-size: 12px; color: var(--gray-500);">
+                                by {{ skill.name }} {% if skill.phone %}· {{ skill.phone }}{% endif %}
+                            </div>
+                        </div>
+                        <span class="skill-tag offer">Offer</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: var(--gray-500); text-align: center; padding: 20px 0;">No skills offered yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Skills Wanted -->
+            <div class="card animate-in animate-in-delay-3" style="grid-column: 1 / -1;">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">🎯</span> Skills Wanted</h3>
+                    <span class="skill-tag want">{{ wanted|length }} wanted</span>
+                </div>
+                {% if wanted %}
+                    {% for skill in wanted %}
+                    <div style="padding: 12px 0; border-bottom: 1px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>{{ skill.skill_name }}</strong>
+                            <div style="font-size: 12px; color: var(--gray-500);">
+                                by {{ skill.name }} {% if skill.phone %}· {{ skill.phone }}{% endif %}
+                            </div>
+                        </div>
+                        <span class="skill-tag want">Want</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: var(--gray-500); text-align: center; padding: 20px 0;">No skills wanted yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

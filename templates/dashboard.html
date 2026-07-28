@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Report | Uganda Economic Gateway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .macro-stat {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            border-top: 4px solid var(--gold);
+        }
+        .macro-stat .number {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .macro-stat .label {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+        .macro-stat .trend {
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .macro-stat .trend.up { color: var(--green); }
+        .macro-stat .trend.down { color: var(--red); }
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 150px;
+            padding: 12px 0;
+        }
+        .bar-chart .bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            min-height: 10px;
+            transition: height 0.5s ease;
+            background: var(--gold);
+        }
+        .bar-chart .bar-label {
+            font-size: 10px;
+            color: var(--gray-400);
+            text-align: center;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🇺🇬</span>
+                <span class="logo-text">
+                    Economic<span class="gold">Gateway</span>
+                    <span class="logo-sub">Skills · Identity · Jobs</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/dashboard" class="active">📊 Jobs Report</a>
+                <a href="/sms_parser">📱 SMS</a>
+                <a href="/identity?name=Mark">🪪 Profile</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- Hero -->
+        <div class="hero animate-in" style="background: linear-gradient(135deg, #1A3A5C 0%, #0C1B33 100%);">
+            <div class="hero-content">
+                <span class="hero-badge">📊 Macro-Economic Report</span>
+                <h1>Jobs-to-Application <span class="gold">Ratio</span></h1>
+                <p>Real-time intelligence on Uganda's employment market.</p>
+            </div>
+        </div>
+
+        <!-- Macro Stats -->
+        <div class="grid-3 animate-in">
+            <div class="macro-stat">
+                <div class="number">{{ applications }}</div>
+                <div class="label">Total Applications</div>
+                <div class="trend up">↑ 12% this month</div>
+            </div>
+            <div class="macro-stat">
+                <div class="number">{{ jobs }}</div>
+                <div class="label">Total Jobs (Estimated)</div>
+                <div class="trend down">↓ 3% this month</div>
+            </div>
+            <div class="macro-stat">
+                <div class="number" style="color: var(--gold);">{{ ratio }}</div>
+                <div class="label">Applications per Job</div>
+                <div class="trend up">↑ 5% this month</div>
+            </div>
+        </div>
+
+        <!-- Monthly Chart -->
+        <div class="card animate-in animate-in-delay-1">
+            <div class="card-header">
+                <h3 class="card-title"><span class="icon">📈</span> Monthly Applications</h3>
+            </div>
+            <div class="bar-chart">
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 25%; background: var(--gold);"></div>
+                    <div class="bar-label">Jan</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 35%; background: var(--gold);"></div>
+                    <div class="bar-label">Feb</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 30%; background: var(--gold);"></div>
+                    <div class="bar-label">Mar</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 50%; background: var(--gold);"></div>
+                    <div class="bar-label">Apr</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 40%; background: var(--gold);"></div>
+                    <div class="bar-label">May</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 60%; background: var(--gold);"></div>
+                    <div class="bar-label">Jun</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 45%; background: var(--gold);"></div>
+                    <div class="bar-label">Jul</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 70%; background: var(--gold);"></div>
+                    <div class="bar-label">Aug</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 55%; background: var(--gold);"></div>
+                    <div class="bar-label">Sep</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 80%; background: var(--gold);"></div>
+                    <div class="bar-label">Oct</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 65%; background: var(--gold);"></div>
+                    <div class="bar-label">Nov</div>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                    <div class="bar" style="height: 100%; background: var(--gold);"></div>
+                    <div class="bar-label">Dec</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Apply Form & Recent Applications -->
+        <div class="grid-2 animate-in animate-in-delay-2">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">📝</span> Apply for a Job</h3>
+                </div>
+                <form method="POST" action="/apply_job">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" name="user_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone <span class="hint">(optional)</span></label>
+                        <input type="text" name="user_phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" name="job_title" class="form-control" placeholder="e.g. Software Developer" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" name="company" class="form-control" placeholder="e.g. Google" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">🚀 Apply Now</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="icon">🕐</span> Recent Applications</h3>
+                </div>
+                {% if recent %}
+                    {% for app in recent %}
+                    <div style="padding: 10px 0; border-bottom: 1px solid var(--gray-100);">
+                        <div style="font-weight: 600;">{{ app.job_title }}</div>
+                        <div style="font-size: 13px; color: var(--gray-500);">
+                            {{ app.company }} · {{ app.name }} · {{ app.applied_date[:10] }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: var(--gray-500); text-align: center; padding: 30px 0;">No applications yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
