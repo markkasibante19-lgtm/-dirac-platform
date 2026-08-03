@@ -219,7 +219,7 @@ def apply_job():
 
     return redirect(url_for('dashboard'))
 
-# ---------- Route 3: SMS Parser (Income Proof) ----------
+# Route 3: SMS Parser (Income Proof)
 
 @app.route('/sms_parser')
 def sms_parser():
@@ -270,7 +270,7 @@ def parse_sms():
 
     return render_template('sms_result.html', result=result, user_name=user_name)
 
-# ---------- Route: User Profile / Identity ----------
+#  Route: User Profile / Identity
 @app.route('/identity')
 def identity():
     name = request.args.get('name')
