@@ -6,9 +6,11 @@ import os
 
 app = Flask(__name__)
 
+#this is the backend of the project and it routes the information to the database which is created if the db file isn't seen.
+
 DB_NAME = 'skills.db'
 
-# ---------- Database Helpers ----------
+# Database Helpers
 
 def get_db():
     conn = sqlite3.connect(DB_NAME)
@@ -76,7 +78,7 @@ def init_db():
 # Initialize database
 init_db()
 
-# ---------- Helper: Get or Create User ----------
+#  Helper: Get or Create User
 
 def get_or_create_user(name, phone):
     conn = get_db()
@@ -101,7 +103,7 @@ def get_or_create_user(name, phone):
     conn.close()
     return user_id
 
-# ---------- Route 1: Home / Skill Swap ----------
+# Route 1: Home / Skill Swap
 
 @app.route('/')
 def home():
@@ -153,7 +155,7 @@ def add_skill():
     conn.close()
     return redirect(url_for('home'))
 
-# ---------- Route 2: Jobs Dashboard + Macro Report ----------
+#  Route 2: Jobs Dashboard + Macro Report 
 
 @app.route('/dashboard')
 def dashboard():
@@ -267,8 +269,6 @@ def parse_sms():
     }
 
     return render_template('sms_result.html', result=result, user_name=user_name)
-
-# ---------- Route 4: User Profile / Identity ----------
 
 # ---------- Route: User Profile / Identity ----------
 @app.route('/identity')
