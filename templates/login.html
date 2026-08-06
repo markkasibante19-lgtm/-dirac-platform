@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Uganda Economic Gateway</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <!-- Logo -->
+        <div class="logo">
+            <h1>🇺🇬 Economic <span>Gateway</span></h1>
+            <p>Skills • Identity • Jobs</p>
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <p class="subtitle">
+            Sign in to continue to your account.
+        </p>
+
+        {% if error %}
+        <div class="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/login" method="POST">
+
+            <!-- Email or Phone -->
+            <div class="form-group">
+                <label for="login">📧 Email or 📱 Phone Number</label>
+
+                <input
+                    id="login"
+                    type="text"
+                    name="login"
+                    placeholder="Enter email or phone number"
+                    autocomplete="username"
+                    required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+
+                <label for="password">🔒 Password</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required>
+
+            </div>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="checkbox"
+                        onclick="showPassword()">
+                    Show Password
+                </label>
+
+                <a href="/forgot-password">
+                    Forgot Password?
+                </a>
+
+            </div>
+
+            <div class="remember">
+
+                <label>
+                    <input type="checkbox" name="remember">
+                    Remember Me
+                </label>
+
+            </div>
+
+            <button type="submit" class="login-btn">
+                🚀 Login
+            </button>
+
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <a href="/register" class="register">
+            Create New Account
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+function showPassword(){
+
+    let password=document.getElementById("password");
+
+    if(password.type==="password"){
+        password.type="text";
+    }else{
+        password.type="password";
+    }
+
+}
+</script>
+
+</body>
+</html>
