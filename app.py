@@ -374,6 +374,7 @@ def login():
         if not login or not password:
             flash('Please enter your login details.')
             return redirect(url_for('login'))
+        # Temporary login
         flash('Login functionality coming soon!')
         return redirect(url_for('home'))
     return render_template('login.html')
@@ -391,8 +392,7 @@ if __name__ == '__main__':
         port=port
     )
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
 
 
 
