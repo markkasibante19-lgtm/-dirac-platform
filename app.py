@@ -5,6 +5,7 @@ import re
 import os
 
 app = Flask(__name__)
+app.secret_key = "secret-key"
 
 #this is the backend of the project and it routes the information to the database which is created if the db file isn't seen.
 
@@ -368,24 +369,33 @@ def identity():
     )
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
     if request.method == 'POST':
+
         login = request.form.get('login', '').strip()
         password = request.form.get('password', '').strip()
+
         if not login or not password:
             flash('Please enter your login details.')
             return redirect(url_for('login'))
-        # Temporary login
+
         flash('Login functionality coming soon!')
         return redirect(url_for('home'))
+
     return render_template('login.html')
+
+
 if __name__ == '__main__':
+
     debug_mode = os.environ.get(
         'FLASK_DEBUG',
         'True'
     ).lower() == 'true'
+
     port = int(
         os.environ.get('PORT', 5000)
     )
+
     app.run(
         debug=debug_mode,
         host='0.0.0.0',
