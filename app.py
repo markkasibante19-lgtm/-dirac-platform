@@ -371,13 +371,34 @@ def login():
 
     if request.method == 'POST':
 
-        login = request.form['login']
-        password = request.form['password']
+        login = request.form.get('login', '').strip()
+        password = request.form.get('password', '').strip()
 
-        return "Login button is connected"
+        if not login or not password:
+            flash('Please enter your login details.')
+            return redirect(url_for('login'))
+
+        flash('Login functionality coming soon!')
+        return redirect(url_for('home'))
 
     return render_template('login.html')
 
+
+if __name__ == '__main__':
+    debug_mode = os.environ.get(
+        'FLASK_DEBUG',
+        'True'
+    ).lower() == 'true'
+
+    port = int(
+        os.environ.get('PORT', 5000)
+    )
+
+    app.run(
+        debug=debug_mode,
+        host='0.0.0.0',
+        port=port
+    )
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
