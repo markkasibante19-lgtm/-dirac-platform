@@ -34,6 +34,20 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
 ''')
+# Update existing database
+cur.execute("PRAGMA table_info(users)")
+columns = [column[1] for column in cur.fetchall()]
+
+if 'email' not in columns:
+    cur.execute("ALTER TABLE users ADD COLUMN email TEXT")
+
+if 'password' not in columns:
+    cur.execute("ALTER TABLE users ADD COLUMN password TEXT")
+
+cur.execute('''
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email
+    ON users(email)
+''')
 
     # Skills table
     cur.execute('''
