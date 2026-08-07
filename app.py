@@ -24,7 +24,7 @@ def init_db():
     cur = conn.cursor()
 
     # Users table
-cur.execute('''
+    cur.execute('''
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -370,22 +370,164 @@ def identity():
         band=band
 
     )
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+
+    if request.method == 'POST':
+
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        phone = request.form.get('phone', '').strip()
+        password = request.form.get('password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
+
+        if not name or not email or not password:
+            flash('Please fill in all required fields.')
+            return redirect(url_for('register'))
+
+        if password != confirm_password:
+            flash('Passwords do not match.')
+            return redirect(url_for('register'))
+
+        if len(password) < 6:
+            flash('Password must be at least 6 characters.')
+            return redirect(url_for('register'))
+
+        conn = get_db()
+        cur = conn.cursor()
+
+        cur.execute(
+            'SELECT id FROM users WHERE email = ?',
+            (email,)
+        )
+
+        if cur.fetchone():
+            conn.close()
+            flash('An account with this email already exists.')
+            return redirect(url_for('login'))
+
+        hashed_password = generate_password_hash(password)
+
+        cur.execute('''
+            INSERT INTO users (name, email, phone, password)
+            VALUES (?, ?, ?, ?)
+        ''', (name, email, phone or None, hashed_password))
+
+        conn.commit()
+        conn.close()
+
+        flash('Registration successful! Please log in.')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
     if request.method == 'POST':
 
-        login = request.form.get('login', '').strip()
+        login_value = request.form.get('login', '').strip()
         password = request.form.get('password', '').strip()
 
-        if not login or not password:
-            flash('Please enter your login details.')
+        if not login_value or not password:
+            flash('Please enter your email/phone and password.')
             return redirect(url_for('login'))
 
-        flash('Login functionality coming soon!')
-        return redirect(url_for('home'))
+        conn = get_db()
+        cur = conn.cursor()
+
+        cur.execute('''
+            SELECT * FROM users
+            WHERE email = ? OR phone = ?
+        ''', (login_value.lower(), login_value))
+
+        user = cur.fetchone()
+        conn.close()
+
+        if not user:
+            flash('Invalid email/phone or password.')
+            return redirect(url_for('login'))
+
+        if not user['password']:
+            flash('This account does not have a password.')
+            return redirect(url_for('login'))
+
+        if not check_password_hash(user['password'], password):
+            flash('Invalid email/phone or password.')
+            return redirect(url_for('login'))
+
+        session['user_id'] = user['id']
+        session['user_name'] = user['name']
+        session['user_email'] = user['email']
+
+        flash('Login successful!')
+
+        return redirect(url_for('dashboard'))
 
     return render_template('login.html')
+
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+
+    if request.method == 'POST':
+
+        email = request.form.get('email', '').strip().lower()
+        new_password = request.form.get('new_password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
+
+        if not email or not new_password or not confirm_password:
+            flash('Please fill in all fields.')
+            return redirect(url_for('forgot_password'))
+
+        if new_password != confirm_password:
+            flash('Passwords do not match.')
+            return redirect(url_for('forgot_password'))
+
+        if len(new_password) < 6:
+            flash('Password must be at least 6 characters.')
+            return redirect(url_for('forgot_password'))
+
+        conn = get_db()
+        cur = conn.cursor()
+
+        cur.execute(
+            'SELECT id FROM users WHERE email = ?',
+            (email,)
+        )
+
+        user = cur.fetchone()
+
+        if not user:
+            conn.close()
+            flash('No account was found with that email.')
+            return redirect(url_for('forgot_password'))
+
+        hashed_password = generate_password_hash(new_password)
+
+        cur.execute('''
+            UPDATE users
+            SET password = ?
+            WHERE email = ?
+        ''', (hashed_password, email))
+
+        conn.commit()
+        conn.close()
+
+        flash('Password reset successfully! Please log in.')
+        return redirect(url_for('login'))
+
+    return render_template('forgot_password.html')
+
+
+@app.route('/logout')
+def logout():
+
+    session.clear()
+
+    flash('You have been logged out.')
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
