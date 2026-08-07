@@ -366,27 +366,23 @@ def identity():
         band=band
 
     )
-
-# ADD LOGIN ROUTE HERE 👇
-
 @app.route('/login', methods=['GET', 'POST'])
-
 def login():
 
     if request.method == 'POST':
 
         login = request.form['login']
-
         password = request.form['password']
 
         return "Login button is connected"
 
     return render_template('login.html')
 
-# KEEP THIS AT THE VERY END
 
-if __name__ == '__main__':
-
-    app.run(debug=True, host='0.0.0.0', port=500
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+
+
+
+
