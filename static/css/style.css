@@ -1124,3 +1124,18 @@ text-decoration: underline;
 }
 
 }
+@media (max-width: 480px) {
+
+    .forgot-card {
+        padding: 28px 20px;
+    }
+
+    .forgot-card .logo h1 {
+        font-size: 23px;
+    }
+
+    .forgot-card h2 {
+        font-size: 22px;
+    }
+
+}
