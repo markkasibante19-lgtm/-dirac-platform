@@ -1140,7 +1140,7 @@ text-decoration: underline;
 
 }
 
-.{
+ * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -1283,7 +1283,7 @@ color: #999;
 
 .divider::before,
 .divider::after {
-content: “”;
+content: "";
 flex: 1;
 height: 1px;
 background: #ddd;
