@@ -1,0 +1,4 @@
+// Append this data to a log file for offline stress testing 
+le tspread = tick.ask - tick.bid;
+if is_news_window {
+     file.write_all(format!("{},{},{},{}\n", tick.timestamp_ms, tick.bid, tick.ask, spread).as_bytes());
