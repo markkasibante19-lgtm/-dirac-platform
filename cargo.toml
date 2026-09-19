@@ -1,0 +1,12 @@
+[package]
+name = "rust_news_scalper"
+version = "0.1.0"
+edition = "2021"
+
+[Dependencies]
+tokio = { version = "1.0", feactures = ["full"] }
+tokio-tungstenite = { version = "0.26", feactures = ["native-tls"] }
+futures-util = "0.3"
+serde = { version = "1.0", feactures = ["derive"] }
+serde_json
+chrono = "0.4"
